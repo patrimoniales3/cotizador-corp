@@ -9,22 +9,29 @@
     <style>
         :root {
             --text-primary: #333333;
-            --text-secondary: #555555;
-            --bg-light: #F9FAFB;
+            --text-secondary: #666666;
+            --bg-light: #F5F7FA;
             --bg-medium: #E5E7EB;
             --white: #FFFFFF;
             --black: #000000;
             --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --alert-bg: #f44336;
+            --alert-text: #FFFFFF;
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --text-primary: #111827;
-                --text-secondary: #6B7280;
-                --bg-light: #1f2937;
-                --bg-medium: #111827;
-                --white: #000000;
-                --black: #FFFFFF;
+                --text-primary: #F5F7FA;
+                --text-secondary: #E5E7EB;
+                --bg-light: #000000;
+                --bg-medium: #4F46E5;
+                --white: #1F2937;
+                --black: #F5F7FA;
+                --primary: #4F46E5;
+                --primary-hover: #4338CA;
+                --alert-bg: #f44336;
+                --alert-text: #FFFFFF;
             }
         }
 
@@ -102,7 +109,7 @@
             color: var(--text-secondary);
         }
 
-        input {
+        input, select {
             width: calc(100% - 25px);
             padding: 12px;
             border: 2px solid var(--bg-medium);
@@ -110,18 +117,7 @@
             font-size: 16px;
             background-color: var(--white);
             color: var(--text-primary);
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-
-        select {
-            width: calc(110% - 30px);
-            padding: 12px;
-            border: 2px solid var(--bg-medium);
-            border-radius: 15px;
-            font-size: 16px;
-            background-color: var(--white);
-            color: var(--text-primary);
-            transition: border-color 0.3s, box-shadow 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s, color 0.3s;;
         }
 
         input:focus, select:focus {
@@ -135,6 +131,7 @@
         }
 
         select {
+            width: calc(110% - 30px);
             appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23555555' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
@@ -183,7 +180,7 @@
         }
 
         button:hover {
-            background-color: #3c35b5;
+            background-color: var(--primary-hover);
             transform: translateY(-2px);
         }
 
@@ -192,8 +189,8 @@
         }
 
         .alert {
-            background-color: #f44336;
-            color: var(--white);
+            background-color: var(--alert-bg);
+            color: var(--alert-text);
             padding: 15px;
             border-radius: 15px;
             margin-top: 10px;
@@ -210,31 +207,46 @@
             margin-top: 30px;
         }
 
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
         .modal-content {
+            background-color: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
             width: 80%;
             height: 80%;
             display: flex;
             flex-direction: column;
-            background-color: var(--white);
-            border-radius: 20px;
-            overflow: hidden;
         }
 
         .modal-buttons {
-            display: flex;
-            justify-content: space-between;
             padding: 15px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
         }
 
         .modal-iframe {
-            flex-grow: 1;
+            width: 100%;
+            height: 100%;
             border: none;
         }
 
         .progress-bar {
             width: 100%;
             height: 24px;
-            background-color: var(--bg-medium);
+            background-color: var(--bg-light);
             border-radius: 12px;
             margin-bottom: 25px;
             overflow: hidden;
@@ -299,19 +311,19 @@
             width: 1px;
         }
         .checkbox-wrapper-16 .checkbox-input:checked + .checkbox-tile {
-            border-color: #4F46E5;
-            color: #4F46E5;
+            border-color: var(--primary);
+            color: var(--primary);
             font-weight: bold;
         }
         .checkbox-wrapper-16 .checkbox-input:checked + .checkbox-tile .checkbox-label {
-            color: #4F46E5;
+            color: var(--primary);
         }
         .checkbox-wrapper-16 .checkbox-input:checked + .checkbox-tile .checkbox-circle {
-            background-color: #4F46E5;
-            border-color: #4F46E5;
+            background-color: var(--primary);
+            border-color: var(--primary);
         }
         .checkbox-wrapper-16 .checkbox-input:focus + .checkbox-tile {
-            border-color: #4F46E5;
+            border-color: var(--primary);
         }
         .checkbox-wrapper-16 .checkbox-tile {
             display: flex;
@@ -320,18 +332,18 @@
             width: 15rem;
             min-height: 3rem;
             border-radius: 1.5rem;
-            border: 2px solid #b5bfd9;
-            background-color: #fff;
+            border: 2px solid var(--bg-medium);
+            background-color: var(--white);
             transition: 0.15s ease;
             cursor: pointer;
             position: relative;
             font-family: 'Helvetica', sans-serif;
         }
         .checkbox-wrapper-16 .checkbox-tile:hover {
-            border-color: #4F46E5;
+            border-color: var(--primary);
         }
         .checkbox-wrapper-16 .checkbox-label {
-            color: #707070;
+            color: var(--text-secondary);
             transition: 0.375s ease;
             text-align: center;
             font-family: 'Helvetica', sans-serif;
@@ -342,8 +354,8 @@
             display: block;
             width: 1.25rem;
             height: 1.25rem;
-            border: 2px solid #b5bfd9;
-            background-color: #fff;
+            border: 2px solid var(--bg-medium);
+            background-color: var(--white);
             border-radius: 50%;
             transition: 0.25s ease;
         }
@@ -373,7 +385,7 @@
             border-radius: 3px;
             transform: scale(1);
             vertical-align: bottom;
-            border: 1px solid #9098A9;
+            border: 1px solid var(--bg-medium);
             transition: all 0.2s ease;
         }
 
@@ -382,7 +394,7 @@
             top: 3px;
             left: 2px;
             fill: none;
-            stroke: #FFFFFF;
+            stroke: var(--white);
             stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
@@ -397,7 +409,7 @@
             content: "";
             width: 100%;
             height: 100%;
-            background: #4F46E5;
+            background: var(--primary);
             display: block;
             transform: scale(0);
             opacity: 1;
@@ -408,12 +420,12 @@
             padding-top: 16px;
         }
         .checkbox-wrapper-46 .cbx:hover span:first-child {
-            border-color: #4F46E5;
+            border-color: var(--primary);
         }
 
         .checkbox-wrapper-46 .inp-cbx:checked + .cbx span:first-child {
-            background: #4F46E5;
-            border-color: #4F46E5;
+            background: var(--primary);
+            border-color: var(--primary);
             animation: wave-46 0.4s ease;
         }
         .checkbox-wrapper-46 .inp-cbx:checked + .cbx span:first-child svg {
@@ -453,7 +465,7 @@
                     <div class="form-group">
                         <label for="dni_ruc">DNI / RUC</label>
                         <input type="text" id="dni_ruc" name="dni_ruc" required>
-                        <div id="dniRucError" class="alert" style="display: none;">
+                        <div  id="dniRucError" class="alert" style="display: none;">
                             <div class="alert-title">Error</div>
                             <div class="alert-description"></div>
                         </div>
@@ -752,7 +764,7 @@
                 const selectedDepartamento = this.value;
                 const zona = zonasData.find(z => z.DEPARTAMENTO === selectedDepartamento);
                 if (zona) {
-                    zonaSeleccionada = zona.ZONA;
+                    zonaSeleccionada = zona["QUALITAS TASA"];
                 }
                 calcularCotizacion();
             });
@@ -864,9 +876,9 @@
             const riesgo = riesgoInput.value;
             const ano = parseInt(anoInput.value);
             const sumaAsegurada = parseFloat(sumaAseguradaInput.value.replace(/,/g, ''));
-
+            
             if (!circulacion || !riesgo || isNaN(ano) || isNaN(sumaAsegurada)) return;
-
+            
             const currentYear = new Date().getFullYear();
             let antiguedad = currentYear - ano;
             
@@ -880,8 +892,14 @@
             const tasaNeta = tasasData[antiguedad] ? tasasData[antiguedad][riesgo] : 0;
             let primaNeta = (tasaNeta * sumaAsegurada) / 100;
             
+            // console.log('pnmData:', pnmData);
+            // console.log('Zona:', zonasData);
+
             // Obtener la prima neta mínima según la ubicación y el riesgo
-            const primaNetaMinima = pnmData[zonaSeleccionada] ? pnmData[zonaSeleccionada][riesgo] : 0;
+            const primaNetaMinima = pnmData[zonaSeleccionada]?.[riesgo];
+
+            console.log(`Zona: ${zonaSeleccionada}, Riesgo: ${riesgo}, Prima Neta Mínima: ${primaNetaMinima}`);
+
             // Asegurarse de que la prima neta no sea menor que la prima neta mínima
             primaNeta = Math.max(primaNeta, primaNetaMinima);
             
@@ -924,34 +942,16 @@
                     
                     // Crear un modal para previsualización
                     const modal = document.createElement('div');
-                    modal.style.position = 'fixed';
-                    modal.style.top = '0';
-                    modal.style.left = '0';
-                    modal.style.width = '100%';
-                    modal.style.height = '100%';
-                    modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
-                    modal.style.display = 'flex';
-                    modal.style.justifyContent = 'center';
-                    modal.style.alignItems = 'center';
-                    modal.style.zIndex = '1000';
+                    modal.className = 'modal';
 
                     const modalContent = document.createElement('div');
-                    modalContent.style.backgroundColor = 'white';
-                    modalContent.style.borderRadius = '10px';
-                    modalContent.style.overflow = 'hidden';
-                    modalContent.style.width = '80%';
-                    modalContent.style.height = '80%';
-                    modalContent.style.display = 'flex';
-                    modalContent.style.flexDirection = 'column';
+                    modalContent.className = 'modal-content';
 
                     const buttonContainer = document.createElement('div');
-                    buttonContainer.style.padding = '10px';
-                    buttonContainer.style.display = 'flex';
-                    buttonContainer.style.justifyContent = 'flex-end';
-                    buttonContainer.style.gap = '10px';
+                    buttonContainer.className = 'modal-buttons';
 
                     const closeButton = document.createElement('button');
-                    closeButton.textContent = 'Cerrar';
+                    closeButton.textContent = 'CERRAR';
                     closeButton.style.padding = '10px 20px';
                     closeButton.style.fontSize = '16px';
                     closeButton.onclick = () => {
@@ -960,7 +960,7 @@
                     };
 
                     const downloadButton = document.createElement('button');
-                    downloadButton.textContent = 'Descargar';
+                    downloadButton.textContent = 'DESCARGAR';
                     downloadButton.style.padding = '10px 20px';
                     downloadButton.style.fontSize = '16px';
                     downloadButton.onclick = () => {
@@ -975,9 +975,7 @@
 
                     const iframe = document.createElement('iframe');
                     iframe.src = pdfUrl;
-                    iframe.style.width = '100%';
-                    iframe.style.height = '100%';
-                    iframe.style.border = 'none';
+                    iframe.className = 'modal-iframe';
 
                     modalContent.appendChild(buttonContainer);
                     modalContent.appendChild(iframe);
