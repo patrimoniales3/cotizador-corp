@@ -855,6 +855,7 @@
                 const selectedModelo = modeloInput.value;
                 const selectedAno = anoInput.value;
                 const vehiculo = vehiculosData.find(v => v.MARCA === selectedMarca && v.MODELO === selectedModelo);
+                console.log(vehiculo)
                 
                 if (vehiculo) {
                     riesgoInput.value = vehiculo.RIESGO;

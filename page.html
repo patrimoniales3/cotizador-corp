@@ -858,7 +858,7 @@
                 
                 if (vehiculo) {
                     riesgoInput.value = vehiculo.RIESGO;
-                    
+                    console.log(riesgoInput)
                     if (selectedAno && vehiculo[selectedAno]) {
                         const sumaAseguradaRef = parseFloat(vehiculo[selectedAno]);
                         const limiteSuperior = Math.round(sumaAseguradaRef * 1.15);
