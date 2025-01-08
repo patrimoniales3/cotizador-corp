@@ -338,7 +338,7 @@ export async function generarPDF(formData, cotizacion, autoDealer) {
 
         addSingleColumnTableRow('Automóviles y Camionetas SUV - Particular', true);
         addSingleColumnTableRow('- Por evento 10% del monto indemnizable, mínimo US$ 150 en Talleres Qualificados Multimarca');
-        addSingleColumnTableRow('- Por evento 15% del monto indemnizable, mínimo US$ 200 en Talleres Concesionarios Afiliados');
+        addSingleColumnTableRow('- Por evento 15% del monto indemnizable, mínimo US$ 150 en Talleres Concesionarios Afiliados (NO APLICA ninguna modificación a lo establecido en vehículos Chinos ni para Híbridos.)');
         addSingleColumnTableRow('- Vehículos híbridos: 20% del monto indemnizable, mínimo US$ 300.00. Aplica para la reparación a los componentes del sistema eléctrico del vehículo.');
         addSingleColumnTableRow('Excepto:');
         addSingleColumnTableRow('- Pérdida Total: Sin Deducible (****)\n- Con excepción de los eventos por Ausencia de Control donde aplicara el deducible correspondiente.');
