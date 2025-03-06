@@ -17,7 +17,7 @@ export async function generarPDF(formData, cotizacion, autoDealer) {
                           now.getHours().toString().padStart(2, '0') +
                           now.getMinutes().toString().padStart(2, '0');
         const placa = formData.placa.replace(/[^a-zA-Z0-9]/g, '');
-        const cliente = formData.contratante.replace(/[./()\s]+$/, '').replace(/[./()]/g, '');
+        const cliente = formData.contratante.replace(/[./()\s]+$/, '').replace(/[./()]/g, '').toUpperCase();
         const fileName = `Qualitas Corp ${timestamp} ${placa} ${cliente}.pdf`;
     
         const doc = new jsPDF(); // Asegúrate de que jsPDF está correctamente inicializado
@@ -297,6 +297,7 @@ export async function generarPDF(formData, cotizacion, autoDealer) {
         addSectionBold('Información del Vehículo',true);
         addRow('USO', 'PARTICULAR');
         addRow('CIRCULACIÓN', formData.circulacion);
+        addRow('CLASE / TIPO', formData.circulacion);
         addRow('PLACA', formData.placa);
         addRow('MARCA', formData.marca);
         addRow('MODELO', formData.modelo);
