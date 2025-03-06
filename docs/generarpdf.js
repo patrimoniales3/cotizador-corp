@@ -297,7 +297,7 @@ export async function generarPDF(formData, cotizacion, autoDealer) {
         addSectionBold('Información del Vehículo',true);
         addRow('USO', 'PARTICULAR');
         addRow('CIRCULACIÓN', formData.circulacion);
-        addRow('CLASE / TIPO', formData.claseTipoList);
+        addRow('CLASE / TIPO', formData.claseTipo);
         addRow('PLACA', formData.placa);
         addRow('MARCA', formData.marca);
         addRow('MODELO', formData.modelo);
