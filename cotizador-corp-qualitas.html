@@ -537,7 +537,9 @@
                     <div class="form-group">
                         <label for="descuento">DESCUENTO COMERCIAL</label>
                         <input type="text" id="descuento" name="descuento" list="descuentoList" autocomplete="on" required>
-                        <datalist id="descuentoList"></datalist>
+                        <label class="info-text" style="padding: 10px; background-color: var(--bg-medium); border-radius: 15px;">
+                            SOLO AUTO NUEVO 10% LIMA - 5% PROVINCIA
+                        </label>
                     </div>
                     <div class="checkbox-wrapper-16">
                         <label class="checkbox-wrapper">
@@ -1070,7 +1072,6 @@
                     contratante: document.getElementById('contratante').value,
                     dni_ruc: document.getElementById('dni_ruc').value,
                     circulacion: document.getElementById('circulacion').value,
-                    claseTipo: document.getElementById('claseTipo').value,
                     placa: document.getElementById('placa').value,
                     marca: marcaInput.value,
                     modelo: modeloInput.value,
