@@ -1050,14 +1050,16 @@
 
             // Asegurarse de que la prima neta no sea menor que la prima neta mínima
             primaNeta = Math.max(primaNeta, primaNetaMinima);
-            
+
+            // Aplicar autoaldealer
+            if (autoDealerCheckbox.checked) {
+                primaNeta += 90;
+            }
+
             // Aplicar descuento comercial
             let primaNetaConDescuento = primaNeta * (1 - descuento);
             primaNetaConDescuento = Math.max(primaNetaConDescuento, primaNetaMinima);
 
-            if (autoDealerCheckbox.checked) {
-                primaNetaConDescuento += 90;
-            }
             const primaTotal = primaNetaConDescuento * 1.03 * 1.18;
 
             tasaNetaInput.value = `${tasaNeta.toFixed(3)}%`;
