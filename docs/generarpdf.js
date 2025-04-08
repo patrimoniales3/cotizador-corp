@@ -308,6 +308,9 @@ export async function generarPDF(formData, cotizacion, autoDealer) {
         addRow('AUTOALDEALER', autoDealer ? 90.00.toLocaleString('es-PE', { style: 'currency', currency: 'USD' }) : '-');
         addRow('PRIMA NETA', cotizacion.primaNeta.toLocaleString('es-PE', { style: 'currency', currency: 'USD' }));
         addRow('PRIMA TOTAL', cotizacion.primaTotal.toLocaleString('es-PE', { style: 'currency', currency: 'USD' }));
+        if (Number(formData.descuento) !== 0) {
+            addRow('DESCUENTO COMERCIAL', `${formData.descuento}%`);
+        }
 
         addPageBreak();
 

@@ -1079,6 +1079,7 @@
                     modelo: modeloInput.value,
                     ano: anoInput.value,
                     sumaAsegurada: parseFloat(sumaAseguradaInput.value.replace(/,/g, '')),
+                    descuento: parseFloat(descuentoInput.value.replace('%', '')) || 0
                 };
 
                 const cotizacion = {
