@@ -537,6 +537,7 @@
                     <div class="form-group">
                         <label for="descuento">DESCUENTO COMERCIAL</label>
                         <input type="text" id="descuento" name="descuento" list="descuentoList" autocomplete="on" required>
+                        <datalist id="descuentoList"></datalist>
                         <label class="info-text" style="padding: 10px; background-color: var(--bg-medium); border-radius: 15px;">
                             SOLO AUTO NUEVO 10% LIMA - 5% PROVINCIA
                         </label>
@@ -692,76 +693,128 @@
             const progressBarContainer = document.getElementById('progressBarContainer');
 
             try {
-                progressText.textContent = 'Descargando datos de vehículos...';
-                const vehiculosCsv = await fetchData(vehiculosDataUrl);
-                progressBar.style.width = '10%';
-
-                progressText.textContent = 'Descargando tasas de Lima...';
-                const tasasLimaCsv = await fetchData(tasasLimaDataUrl);
-                progressBar.style.width = '20%';
-
-                progressText.textContent = 'Descargando tasas de Provincia...';
-                const tasasProvinciaCsv = await fetchData(tasasProvinciaDataUrl);
-                progressBar.style.width = '30%';
-
-                progressText.textContent = 'Descargando prima neta mínima...';
-                const pnmCsv = await fetchData(pnmDataUrl);
-                progressBar.style.width = '40%';
-
-                progressText.textContent = 'Descargando clasificación de riesgo...';
-                const clasificacionRiesgoCsv = await fetchData(clasificacionRiesgoDataUrl);
-                progressBar.style.width = '50%';
-
-                progressText.textContent = 'Descargando datos de zonas...';
-                const zonasCsv = await fetchData(zonasDataUrl);
-                progressBar.style.width = '60%';
-
-                progressText.textContent = 'Descargando datos de riesgo...';
-                const riesgoCsv = await fetchData(riesgo);
-                progressBar.style.width = '70%';
-
-                progressText.textContent = 'Descargando datos de clase-tipo...';
-                const claseTipoCsv = await fetchData(claseTipo);
-                progressBar.style.width = '80%';
-
-                progressText.textContent = 'Descargando datos de descuento...';
-                const descuentoCsv = await fetchData(descuento);
-                progressBar.style.width = '85%';
-
-                progressText.textContent = 'Descargando datos de GPS general...';
-                const vehGpsGeneralCsv = await fetchData(vehGpsGeneral);
-                progressBar.style.width = '90%';
-
-                progressText.textContent = 'Descargando datos de GPS sur...';
-                const vehGpsSurCsv = await fetchData(vehGpsSur);
-                progressBar.style.width = '92%';
-
-                progressText.textContent = 'Descargando datos de GPS centro...';
-                const vehGpsCentroCsv = await fetchData(vehGpsCentro);
-                progressBar.style.width = '94%';
-
-                progressText.textContent = 'Descargando datos de GPS norte...';
-                const vehGpsNorteCsv = await fetchData(vehGpsNorte);
-                progressBar.style.width = '96%';
-
-                progressText.textContent = 'Descargando datos de GPS Lima...';
-                const vehGpsLimaCsv = await fetchData(vehGpsLima);
-                progressBar.style.width = '100%';
-
-                vehiculosData = parseCsv(vehiculosCsv);
-                tasasLimaData = parseTasasCsv(tasasLimaCsv);
-                tasasProvinciaData = parseTasasCsv(tasasProvinciaCsv);
-                pnmData = parsePnmCsv(pnmCsv);
-                clasificacionRiesgoData = parseCsv(clasificacionRiesgoCsv);
-                zonasData = parseCsv(zonasCsv);
-                riesgoData = parseCsv(riesgoCsv);
-                claseTipoData = parseCsv(claseTipoCsv);
-                descuentoData = parseCsv(descuentoCsv);
-                vehGpsGeneralData = parseCsv(vehGpsGeneralCsv);
-                vehGpsSurData = parseCsv(vehGpsSurCsv);
-                vehGpsCentroData = parseCsv(vehGpsCentroCsv);
-                vehGpsNorteData = parseCsv(vehGpsNorteCsv);
-                vehGpsLimaData = parseCsv(vehGpsLimaCsv);
+                progressText.textContent = 'Descargando datos en paralelo...';
+                
+                // Definir todas las fuentes de datos con sus nombres para seguimiento
+                const dataSources = [
+                    { name: 'vehículos', url: vehiculosDataUrl },
+                    { name: 'tasas de Lima', url: tasasLimaDataUrl },
+                    { name: 'tasas de Provincia', url: tasasProvinciaDataUrl },
+                    { name: 'prima neta mínima', url: pnmDataUrl },
+                    { name: 'clasificación de riesgo', url: clasificacionRiesgoDataUrl },
+                    { name: 'zonas', url: zonasDataUrl },
+                    { name: 'riesgo', url: riesgo },
+                    { name: 'clase-tipo', url: claseTipo },
+                    { name: 'descuento', url: descuento },
+                    { name: 'GPS general', url: vehGpsGeneral },
+                    { name: 'GPS sur', url: vehGpsSur },
+                    { name: 'GPS centro', url: vehGpsCentro },
+                    { name: 'GPS norte', url: vehGpsNorte },
+                    { name: 'GPS Lima', url: vehGpsLima }
+                ];
+                
+                // Contador para actualizar la barra de progreso
+                let completedRequests = 0;
+                const totalRequests = dataSources.length;
+                
+                // Crear un array de promesas con manejo de progreso
+                const promises = dataSources.map(source => {
+                    return fetchData(source.url)
+                        .then(data => {
+                            completedRequests++;
+                            const progress = Math.floor((completedRequests / totalRequests) * 100);
+                            progressBar.style.width = `${progress}%`;
+                            progressText.textContent = `Descargando datos: ${completedRequests}/${totalRequests}`;
+                            return { name: source.name, data, status: 'fulfilled' };
+                        })
+                        .catch(error => {
+                            completedRequests++;
+                            const progress = Math.floor((completedRequests / totalRequests) * 100);
+                            progressBar.style.width = `${progress}%`;
+                            console.error(`Error al cargar datos de ${source.name}:`, error);
+                            return { name: source.name, error: error.message, status: 'rejected' };
+                        });
+                });
+                
+                // Esperar a que todas las promesas se resuelvan o rechacen
+                const results = await Promise.allSettled(promises);
+                
+                // Filtrar y contar errores
+                const successfulResults = results.filter(result => result.status === 'fulfilled' && result.value.status === 'fulfilled');
+                const failedResults = results.filter(result => result.status === 'rejected' || (result.status === 'fulfilled' && result.value.status === 'rejected'));
+                
+                if (failedResults.length > 0) {
+                    console.warn(`${failedResults.length} fuentes de datos no pudieron cargarse. La aplicación intentará continuar con los datos disponibles.`);
+                    // Mostrar alerta al usuario solo si hay errores críticos
+                    if (failedResults.some(result => 
+                        result.status === 'fulfilled' && 
+                        ['vehículos', 'tasas de Lima', 'tasas de Provincia'].includes(result.value.name))) {
+                        alert('Algunos datos críticos no pudieron cargarse. La aplicación podría no funcionar correctamente.');
+                    }
+                }
+                
+                // Procesar los resultados
+                successfulResults.forEach(result => {
+                    // Con Promise.allSettled, necesitamos acceder a result.value
+                    const { name, data } = result.value;
+                    
+                    switch (name) {
+                        case 'vehículos':
+                            vehiculosData = parseCsv(data);
+                            break;
+                        case 'tasas de Lima':
+                            tasasLimaData = parseTasasCsv(data);
+                            break;
+                        case 'tasas de Provincia':
+                            tasasProvinciaData = parseTasasCsv(data);
+                            break;
+                        case 'prima neta mínima':
+                            pnmData = parsePnmCsv(data);
+                            break;
+                        case 'clasificación de riesgo':
+                            clasificacionRiesgoData = parseCsv(data);
+                            break;
+                        case 'zonas':
+                            zonasData = parseCsv(data);
+                            break;
+                        case 'riesgo':
+                            riesgoData = parseCsv(data);
+                            break;
+                        case 'clase-tipo':
+                            claseTipoData = parseCsv(data);
+                            break;
+                        case 'descuento':
+                            descuentoData = parseCsv(data);
+                            break;
+                        case 'GPS general':
+                            vehGpsGeneralData = parseCsv(data);
+                            break;
+                        case 'GPS sur':
+                            vehGpsSurData = parseCsv(data);
+                            break;
+                        case 'GPS centro':
+                            vehGpsCentroData = parseCsv(data);
+                            break;
+                        case 'GPS norte':
+                            vehGpsNorteData = parseCsv(data);
+                            break;
+                        case 'GPS Lima':
+                            vehGpsLimaData = parseCsv(data);
+                            break;
+                    }
+                });
+                
+                // Registrar qué datos no se pudieron cargar
+                if (failedResults.length > 0) {
+                    console.log('Los siguientes datos no pudieron cargarse:');
+                    failedResults.forEach(result => {
+                        if (result.status === 'fulfilled') {
+                            console.log(`- ${result.value.name}: ${result.value.error}`);
+                        } else {
+                            console.log(`- Error en una solicitud: ${result.reason}`);
+                        }
+                    });
+                }
 
                 progressText.textContent = 'Datos cargados correctamente';
                 setTimeout(() => {
@@ -911,11 +964,11 @@
             });
 
             const descuentos = [...new Set(descuentoData.map(d => d.DESCUENTO))];
-            descuentos.forEach(descuento => {
-                const option = document.createElement('option');
-                option.value = descuento;
-                descuentoList.appendChild(option);
-            });
+                descuentos.forEach(descuento => {
+                    const option = document.createElement('option');
+                    option.value = descuento;
+                    descuentoList.appendChild(option);
+                });
         }
 
         function populateYears() {
@@ -1058,7 +1111,7 @@
 
             // Aplicar descuento comercial
             let primaNetaConDescuento = primaNeta * (1 - descuento);
-            primaNetaConDescuento = Math.max(primaNetaConDescuento, primaNetaMinima);
+            // primaNetaConDescuento = Math.max(primaNetaConDescuento, primaNetaMinima);
 
             const primaTotal = primaNetaConDescuento * 1.03 * 1.18;
 
