@@ -472,7 +472,7 @@
                         <input type="text" id="contratante" name="contratante" required>
                     </div>
                     <div class="form-group">
-                        <label for="dni_ruc">DNI / RUC</label>
+                        <label for="dni_ruc">DNI / RUC / CE</label>
                         <input type="text" id="dni_ruc" name="dni_ruc" required>
                         <div  id="dniRucError" class="alert" style="display: none;">
                             <div class="alert-title">Error</div>
@@ -950,13 +950,28 @@
         function handleDniRucBlur() {
             const value = dniRucInput.value;
             const errorElement = document.getElementById('dniRucError');
-            if (value.length === 11 && !['10', '20'].includes(value.substring(0, 2))) {
+            
+            // Validar RUC
+            if (value.length === 11) {
+            if (!['10', '20'].includes(value.substring(0, 2))) {
                 showError(errorElement, 'RUC debe comenzar con 10 o 20');
-            } else if (value.length !== 8 && value.length !== 11) {
-                showError(errorElement, 'DNI debe tener 8 dígitos o RUC debe tener 11 dígitos');
-            } else {
-                hideError(errorElement);
+                return;
             }
+            }
+            // Validar CE 
+            else if (value.length === 9) {
+            if (value.charAt(0) !== '0') {
+                showError(errorElement, 'CE debe comenzar con 0 y tener 9 dígitos');
+                return;
+            }
+            }
+            // Validar DNI
+            else if (value.length !== 8) {
+            showError(errorElement, 'DNI debe tener 8 dígitos, CE debe tener 9 dígitos comenzando con 0, o RUC debe tener 11 dígitos');
+            return;
+            }
+
+            hideError(errorElement);
         }
 
         function handlePlacaBlur() {
