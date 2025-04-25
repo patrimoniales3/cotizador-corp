@@ -288,7 +288,7 @@ export async function generarPDF(formData, cotizacion, autoDealer) {
 
         addSectionBold('Información General',true);
         addRow('CONTRATANTE/ASEGURADO', formData.contratante);
-        addRow('DNI/RUC', formData.dni_ruc);
+        addRow('DNI/RUC/CE', formData.dni_ruc);
         addRow('CORREDOR', 'GF CONSULTOR CORREDORES DE SEGUROS');
         addRow('PERÍODO', '365 días');
         addRow('MONEDA', 'US$ dólares americanos');
